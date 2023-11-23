@@ -46,12 +46,24 @@ pt_wd = st.slider("กรุณาเลือกข้อมูล petal.width"
 sp_len = st.number_input("กรุณาเลือกข้อมูล sepal.length")
 sp_wd = st.number_input("กรุณาเลือกข้อมูล sepal.width")
 
+
 if st.button("ทำนายผล"):
     #st.write("ทำนาย")
    dt = pd.read_csv("./data/Root1.csv") 
    X = dt.drop('Credit_History', axis=1)
    y = dt.Credit_History   
+
    Knn_model = KNeighborsClassifier(n_neighbors=3)
    Knn_model.fit(X, y)   
+   x_input = np.array([[0, 1, 1.4, 0,1,57.7,38,10,18.9]])
+   st.write(Knn_model.predict(x_input))
    
+   out=Knn_model.predict(x_input)
+
+   if out[0] == 1:
+    st.write('1')
+   else:
+    st.write('0')
+else:
+    st.write("ไม่ทำนาย")
 
