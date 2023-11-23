@@ -1,4 +1,4 @@
-from sklearn.neighbors import KNeighborsClassifier
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -48,13 +48,16 @@ sp_wd = st.number_input("กรุณาเลือกข้อมูล sepal.
 
 
 if st.button("ทำนายผล"):
+   from sklearn.neighbors import KNeighborsClassifier
     #st.write("ทำนาย")
    dt = pd.read_csv("./data/Root1.csv") 
    dt['Dependents'] = pd.to_numeric(dt['Dependents'], errors='coerce')
-   #st.write(dt.dtypes)  
+   dt.isna().sum()
+   dt.dropna(inplace=True)
+   
    X = dt.drop('Credit_History', axis=1)   
    y = dt.Credit_History 
-
+   #st.write(dt.dtypes)  
 
    Knn_model = KNeighborsClassifier(n_neighbors=3)
    Knn_model.fit(X, y)  
