@@ -50,7 +50,8 @@ sp_wd = st.number_input("กรุณาเลือกข้อมูล sepal.
 if st.button("ทำนายผล"):
     #st.write("ทำนาย")
    dt = pd.read_csv("./data/Root1.csv") 
-   X = dt.drop('Credit_History', axis=1)
+   dt["Dependents"] = dt["Dependents"].astype(float)
+   X = dt.drop('Credit_History', axis=1)   
    y = dt.Credit_History 
 
    st.write(dt.dtypes)  
