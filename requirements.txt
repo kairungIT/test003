@@ -1,6 +1,8 @@
 numpy
 pandas
 matplotlib
-scikit-learn==0.23.1
 seaborn
-streamlit==1.7.0
+streamlit
+plotly==5.9.0
+openpyxl
+scikit-learn

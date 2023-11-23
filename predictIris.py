@@ -1,48 +1,84 @@
+from sklearn.neighbors import KNeighborsClassifier
 import streamlit as st
 import pandas as pd
-from sklearn import datasets
-from sklearn.ensemble import RandomForestClassifier
+import numpy as np
+import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
 
-st.write("""
-# Simple Iris Flower Prediction App
-This app predicts the **Iris flower** type!
-""")
+st.header('kairung')
+#st.image("./pic/kairung.jpg")
+col1, col2, col3 = st.columns(3)
 
-st.sidebar.header('User Input Parameters')
+with col1:
+   st.header("Versicolor")
+   st.image("./pic/iris1.jpg")
 
-def user_input_features():
-    sepal_length = st.sidebar.slider('Sepal length', 4.3, 7.9, 5.4)
-    sepal_width = st.sidebar.slider('Sepal width', 2.0, 4.4, 3.4)
-    petal_length = st.sidebar.slider('Petal length', 1.0, 6.9, 1.3)
-    petal_width = st.sidebar.slider('Petal width', 0.1, 2.5, 0.2)
-    data = {'sepal_length': sepal_length,
-            'sepal_width': sepal_width,
-            'petal_length': petal_length,
-            'petal_width': petal_width}
-    features = pd.DataFrame(data, index=[0])
-    return features
+with col2:
+   st.header("Verginiga")
+   st.image("./pic/iris2.jpg")
 
-df = user_input_features()
+with col3:
+   st.header("Setosa")
+   st.image("./pic/iris3.jpg")
 
-st.subheader('User Input parameters')
-st.write(df)
+html_7 = """
+<div style="background-color:#EC7063;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
+<center><h5>สถิติข้อมูลดอกไม้</h5></center>
+</div>
+"""
+st.markdown(html_7, unsafe_allow_html=True)
+st.markdown("")
 
-iris = datasets.load_iris()
-X = iris.data
-Y = iris.target
+dt = pd.read_csv("./data/iris.csv")
+st.write(dt.head(10))
 
-clf = RandomForestClassifier()
-clf.fit(X, Y)
+dt1 = dt['petal.length'].sum()
+dt2 = dt['petal.width'].sum()
+dt3 = dt['sepal.length'].sum()
+dt4 = dt['sepal.width'].sum()
 
-prediction = clf.predict(df)
-prediction_proba = clf.predict_proba(df)
+dx = [dt1, dt2, dt3, dt4]
+dx2 = pd.DataFrame(dx, index=["d1", "d2", "d3", "d4"])
 
-st.subheader('Class labels and their corresponding index number')
-st.write(iris.target_names)
+if st.button("แสดงการจินตทัศน์ข้อมูล"):
+   #st.write(dt.head(10))
+   st.bar_chart(dx2)
+   st.button("ไม่แสดงข้อมูล")
+else:
+    st.write("ไม่แสดงข้อมูล")
 
-st.subheader('Prediction')
-st.write(iris.target_names[prediction])
-#st.write(prediction)
+html_8 = """
+<div style="background-color:#6BD5DA;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
+<center><h5>ทำนายข้อมูล</h5></center>
+</div>
+"""
+st.markdown(html_8, unsafe_allow_html=True)
+st.markdown("")
 
-st.subheader('Prediction Probability')
-st.write(prediction_proba)
+pt_len = st.slider("กรุณาเลือกข้อมูล petal.length")
+pt_wd = st.slider("กรุณาเลือกข้อมูล petal.width")
+
+sp_len = st.number_input("กรุณาเลือกข้อมูล sepal.length")
+sp_wd = st.number_input("กรุณาเลือกข้อมูล sepal.width")
+
+if st.button("ทำนายผล"):
+    #st.write("ทำนาย")
+   dt = pd.read_csv("./data/iris.csv") 
+   X = dt.drop('variety', axis=1)
+   y = dt.variety   
+   Knn_model = KNeighborsClassifier(n_neighbors=3)
+   Knn_model.fit(X, y)   
+   x_input = np.array([[pt_len, pt_wd, sp_len, sp_wd]])
+   st.write(Knn_model.predict(x_input))
+   
+   out=Knn_model.predict(x_input)
+
+   if out[0] == 'Setosa':
+    st.image("./pic/iris1.jpg")
+   elif out[0] == 'Versicolor':       
+    st.image("./pic/iris2.jpg")
+   else:
+    st.image("./pic/iris3.jpg")
+else:
+    st.write("ไม่ทำนาย")
