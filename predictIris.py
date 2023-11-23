@@ -51,10 +51,11 @@ if st.button("ทำนายผล"):
     #st.write("ทำนาย")
    dt = pd.read_csv("./data/Root1.csv") 
    dt["Dependents"] = dt["Dependents"].astype(float)
+   st.write(dt.dtypes)  
    X = dt.drop('Credit_History', axis=1)   
    y = dt.Credit_History 
 
-   st.write(dt.dtypes)  
+   
 
    Knn_model = KNeighborsClassifier(n_neighbors=3)
    Knn_model.fit(X, y)  
